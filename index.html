@@ -28,6 +28,7 @@
 
     fetch(sheetUrl, {
       method: 'POST',
+      mode: 'cors',
       body: JSON.stringify({ qr: qrCodeText }),
       headers: { 'Content-Type': 'application/json' }
     })
