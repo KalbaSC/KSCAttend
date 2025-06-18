@@ -1,0 +1,46 @@
+<!-- qr-scan.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Attendance Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    #reader { width: 300px; margin: auto; }
+    .msg { margin-top: 20px; font-size: 18px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Scan QR for Attendance</h2>
+  <div id="reader"></div>
+  <div class="msg" id="message"></div>
+
+  <script>
+    const sheetUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+    const message = document.getElementById('message');
+
+    function markAttendance(qrCodeText) {
+      fetch(sheetUrl, {
+        method: 'POST',
+        body: JSON.stringify({ qr: qrCodeText }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(res => res.text())
+      .then(text => message.textContent = text)
+      .catch(err => message.textContent = '❌ Error saving attendance');
+    }
+
+    const html5QrCode = new Html5Qrcode("reader");
+    html5QrCode.start({ facingMode: "environment" }, {
+      fps: 10, qrbox: 250
+    }, 
+    qrText => {
+      html5QrCode.stop();
+      message.textContent = '✅ QR scanned: ' + qrText;
+      markAttendance(qrText);
+    });
+  </script>
+</body>
+</html>
