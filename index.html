@@ -16,32 +16,43 @@
   <h2>Scan QR for Attendance</h2>
   <div id="reader"></div>
   <div class="msg" id="message"></div>
+  <div id="debug" style="color:red; font-weight:bold; margin-top: 20px;"></div>
 
-  <script>
-    const sheetUrl = 'https://script.google.com/macros/s/AKfycbycaNZ-V8ZRC4eQOPIzwdbOiNEgeHto5YZdN6ObEWUuFUxLeSkJ8Gyf-ByLxzTU9wnN/exec';
-    const message = document.getElementById('message');
+<script>
+  const sheetUrl = 'https://script.google.com/macros/s/AKfycbycaNZ-V8ZRC4eQOPIzwdbOiNEgeHto5YZdN6ObEWUuFUxLeSkJ8Gyf-ByLxzTU9wnN/exec';
+  const message = document.getElementById('message');
+  const debug = document.getElementById('debug');
 
-    function markAttendance(qrCodeText) {
-      fetch(sheetUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify({ qr: qrCodeText }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      .then(res => res.text())
-      .then(text => message.textContent = text)
-      .catch(err => message.textContent = '❌ Error saving attendance');
-    }
+  function markAttendance(qrCodeText) {
+    debug.innerText = '📤 Sending QR: ' + qrCodeText;
 
-    const html5QrCode = new Html5Qrcode("reader");
-    html5QrCode.start({ facingMode: "environment" }, {
-      fps: 10, qrbox: 250
-    }, 
-    qrText => {
-      html5QrCode.stop();
-      message.textContent = '✅ QR scanned: ' + qrText;
-      markAttendance(qrText);
+    fetch(sheetUrl, {
+      method: 'POST',
+      body: JSON.stringify({ qr: qrCodeText }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.text())
+    .then(text => {
+      message.textContent = text;
+      debug.innerText += '\n✅ Response: ' + text;
+    })
+    .catch(err => {
+      message.textContent = '❌ Error saving attendance';
+      debug.innerText += '\n❌ Error: ' + err.message;
     });
-  </script>
+  }
+
+  const html5QrCode = new Html5Qrcode("reader");
+  html5QrCode.start({ facingMode: "environment" }, {
+    fps: 10, qrbox: 250
+  }, 
+  qrText => {
+    html5QrCode.stop();
+    message.textContent = '✅ QR scanned: ' + qrText;
+    debug.innerText = '📥 Scanned QR: ' + qrText;
+    markAttendance(qrText);
+  });
+</script>
+
 </body>
 </html>
