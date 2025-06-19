@@ -26,6 +26,8 @@
     formData.append("date", new Date().toISOString());
 
     fetch("https://script.google.com/macros/s/AKfycbzviOopQsHAzaQGi8E-dAi_gWTWW9LRuQnIIOwxlieLX7sUavoL8NCeEOdSXQN_UE5o/exec", {
+    mode: 'no-cors',
+    credentials: 'include'
     method: "POST",
     body: formData
   })
