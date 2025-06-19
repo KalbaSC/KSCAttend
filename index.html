@@ -25,13 +25,19 @@
       method: 'POST',
       mode: 'no-cors',
       body: JSON.stringify({
-        id: code,
-        date: new Date().toISOString()
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+      id: code,
+      date: new Date().toISOString()
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(() => {
+    console.log("✅ Attendance sent");
+  })
+  .catch(err => {
+    console.error("❌ Error sending attendance:", err);
+  });
   }
 
   const html5QrCode = new Html5Qrcode("reader");
@@ -39,11 +45,14 @@
       fps: 10,
       qrbox: 250
     },
-    qrCodeMessage => {
-      html5QrCode.stop();
-      markAttendance(qrCodeMessage);
-      setTimeout(() => location.reload(), 3000);
-    },
+qrCodeMessage => {
+  console.log("✅ QR Code scanned:", qrCodeMessage);
+  html5QrCode.stop().then(() => {
+    console.log("📷 Camera stopped");
+
+    markAttendance(qrCodeMessage);
+  });
+},
     errorMessage => {
     }
   );
