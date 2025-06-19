@@ -12,17 +12,19 @@
       src: url('NotoKufiArabic.ttf') format('truetype');
     }
 
-    body {
-      font-family: 'NotoKufiArabic', 'Cairo', sans-serif;
+    html, body {
+      height: 100%;
       margin: 0;
+      padding: 0;
+      font-family: 'NotoKufiArabic', 'Cairo', sans-serif;
       background: url('black_and_yellow_grunge_background.jpg') no-repeat center center fixed;
       background-size: cover;
       color: white;
-      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .header-container {
-      width: 100%;
       background: #111;
       border-bottom: 3px solid #f4e733;
     }
@@ -35,7 +37,6 @@
       justify-content: center;
       gap: 20px;
       padding: 20px 42px;
-      background-color: #111;
     }
 
     .logo {
@@ -62,6 +63,15 @@
       color: #f4e733;
     }
 
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-bottom: 40px;
+    }
+
     h2 {
       color: #f4e733;
       text-align: center;
@@ -71,9 +81,9 @@
 
     #reader {
       width: 320px;
-      margin: 20px auto 10px;
       border: 3px solid #f4e733;
-      border-radius: 12px;
+      border-radius: 15px;
+      overflow: hidden;
       background-color: #000;
     }
 
@@ -81,7 +91,7 @@
       text-align: center;
       font-size: 18px;
       color: #f4e733;
-      margin-bottom: 40px;
+      margin-top: 15px;
     }
 
     footer {
@@ -90,7 +100,6 @@
       text-align: center;
       padding: 20px;
       border-top: 3px solid #f4e733;
-      font-size: 14px;
     }
 
     .social-icons a {
@@ -142,9 +151,22 @@
   </div>
 </header>
 
-<h2>مسح رمز الاستجابة السريعة للحضور</h2>
-<div id="reader"></div>
-<div id="status">يرجى توجيه الكاميرا نحو رمز QR الخاص باللاعب</div>
+<main>
+  <h2>مسح رمز الاستجابة السريعة للحضور</h2>
+  <div id="reader"></div>
+  <div id="status">يرجى توجيه الكاميرا نحو رمز QR الخاص باللاعب</div>
+</main>
+
+<footer>
+  <p>© 2025 نادي كلباء الرياضي الثقافي - جميع الحقوق محفوظة</p>
+  <div class="social-icons">
+    <a href="https://facebook.com/Kalbasc1" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://instagram.com/kalbasc" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://x.com/Kalba_sc" target="_blank"><i class="fab fa-twitter"></i></a>
+    <a href="https://youtube.com/@kalbasc" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://tiktok.com/@kalbasc" target="_blank"><i class="fab fa-tiktok"></i></a>
+  </div>
+</footer>
 
 <script>
   const statusDiv = document.getElementById("status");
@@ -177,17 +199,6 @@
     error => {}
   );
 </script>
-
-<footer>
-  <p>© 2025 نادي كلباء الرياضي الثقافي - جميع الحقوق محفوظة</p>
-  <div class="social-icons">
-    <a href="https://facebook.com/Kalbasc1" target="_blank"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://instagram.com/kalbasc" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://x.com/Kalba_sc" target="_blank"><i class="fab fa-twitter"></i></a>
-    <a href="https://youtube.com/@kalbasc" target="_blank"><i class="fab fa-youtube"></i></a>
-    <a href="https://tiktok.com/@kalbasc" target="_blank"><i class="fab fa-tiktok"></i></a>
-  </div>
-</footer>
 
 </body>
 </html>
