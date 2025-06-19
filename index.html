@@ -23,7 +23,7 @@
 
     fetch('https://script.google.com/macros/s/AKfycbzviOopQsHAzaQGi8E-dAi_gWTWW9LRuQnIIOwxlieLX7sUavoL8NCeEOdSXQN_UE5o/exec', {
       method: 'POST',
-      mode: 'cors',
+      mode: 'no-cors',
       body: JSON.stringify({
       id: code,
       date: new Date().toISOString()
