@@ -28,7 +28,6 @@
     }
 
     .header-right {
-      width: 100%;
       max-width: 1170px;
       margin: auto;
       display: flex;
@@ -37,11 +36,9 @@
       gap: 20px;
       padding: 20px 42px;
       background-color: #111;
-      color: white;
-      box-sizing: border-box;
     }
 
-    .header-right img.logo {
+    .logo {
       height: 70px;
     }
 
@@ -68,22 +65,23 @@
     h2 {
       color: #f4e733;
       text-align: center;
-      margin: 30px 0 20px;
+      margin: 30px 0 10px;
+      font-size: 22px;
     }
 
     #reader {
       width: 320px;
-      margin: 0 auto;
+      margin: 20px auto 10px;
       border: 3px solid #f4e733;
       border-radius: 12px;
       background-color: #000;
     }
 
     #status {
-      margin-top: 20px;
+      text-align: center;
       font-size: 18px;
       color: #f4e733;
-      text-align: center;
+      margin-bottom: 40px;
     }
 
     footer {
@@ -108,20 +106,24 @@
         gap: 10px;
       }
 
-      .header-info .arabic-name {
+      .logo {
+        height: 50px;
+      }
+
+      .arabic-name {
         font-size: 16px;
       }
 
-      .header-info .english-name {
+      .english-name {
         font-size: 12px;
-      }
-
-      .header-right img.logo {
-        height: 50px !important;
       }
 
       #reader {
         width: 90%;
+      }
+
+      #status {
+        font-size: 16px;
       }
     }
   </style>
