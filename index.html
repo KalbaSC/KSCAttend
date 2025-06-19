@@ -21,16 +21,14 @@
   function markAttendance(code) {
     document.getElementById('status').innerText = `تم تسجيل الحضور للرمز: ${code}`;
 
-    fetch('https://script.google.com/macros/s/AKfycbzviOopQsHAzaQGi8E-dAi_gWTWW9LRuQnIIOwxlieLX7sUavoL8NCeEOdSXQN_UE5o/exec', {
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify({
-      id: code,
-      date: new Date().toISOString()
-    }),
-   headers: {
-    'Content-Type': 'text/plain'
-  }
+    const formData = new FormData();
+    formData.append("id", code);
+    formData.append("date", new Date().toISOString());
+
+    fetch("https://script.google.com/macros/s/AKfycbzviOopQsHAzaQGi8E-dAi_gWTWW9LRuQnIIOwxlieLX7sUavoL8NCeEOdSXQN_UE5o/exec", {
+    method: "POST",
+    mode: "no-cors",
+    body: formData
   })
   .then(() => {
     console.log("✅ Attendance sent");
@@ -41,6 +39,7 @@
   }
 
   const html5QrCode = new Html5Qrcode("reader");
+  
   html5QrCode.start({ facingMode: "environment" }, {
       fps: 10,
       qrbox: 250
