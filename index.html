@@ -1,58 +1,52 @@
-<!-- qr-scan.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <title>مسح الحضور</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Attendance Scanner</title>
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-    #reader { width: 300px; margin: auto; }
-    .msg { margin-top: 20px; font-size: 18px; font-weight: bold; }
+    body { font-family: 'Arial'; text-align: center; background: #111; color: white; }
+    #reader { width: 300px; margin: 20px auto; }
+    #status { margin-top: 20px; font-size: 18px; color: #f4e733; }
   </style>
 </head>
 <body>
-  <h2>Scan QR for Attendance</h2>
-  <div id="reader"></div>
-  <div class="msg" id="message"></div>
-  <div id="debug" style="color:red; font-weight:bold; margin-top: 20px;"></div>
+
+<h2>مسح رمز الاستجابة السريعة للحضور</h2>
+<div id="reader"></div>
+<div id="status">يرجى توجيه الكاميرا نحو QR</div>
 
 <script>
-  const sheetUrl = 'https://script.google.com/macros/s/AKfycbycaNZ-V8ZRC4eQOPIzwdbOiNEgeHto5YZdN6ObEWUuFUxLeSkJ8Gyf-ByLxzTU9wnN/exec';
-  const message = document.getElementById('message');
-  const debug = document.getElementById('debug');
+  function markAttendance(code) {
+    document.getElementById('status').innerText = `تم تسجيل الحضور للرمز: ${code}`;
 
-  function markAttendance(qrCodeText) {
-    debug.innerText = '📤 Sending QR: ' + qrCodeText;
-
-    fetch(sheetUrl, {
+    fetch('https://script.google.com/macros/s/AKfycbyOWXwzJU57fREk0EBx5Z4qIThT11qWxmwIenxtO6oOXmHvpgKRijp3ORBWyAsLvx2U/execc', {
       method: 'POST',
-      mode: 'cors',
-      body: JSON.stringify({ qr: qrCodeText }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(res => res.text())
-    .then(text => {
-      message.textContent = text;
-      debug.innerText += '\n✅ Response: ' + text;
-    })
-    .catch(err => {
-      message.textContent = '❌ Error saving attendance';
-      debug.innerText += '\n❌ Error: ' + err.message;
+      mode: 'no-cors',
+      body: JSON.stringify({
+        id: code,
+        date: new Date().toISOString()
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
   }
 
   const html5QrCode = new Html5Qrcode("reader");
   html5QrCode.start({ facingMode: "environment" }, {
-    fps: 10, qrbox: 250
-  }, 
-  qrText => {
-    html5QrCode.stop();
-    message.textContent = '✅ QR scanned: ' + qrText;
-    debug.innerText = '📥 Scanned QR: ' + qrText;
-    markAttendance(qrText);
-  });
+      fps: 10,
+      qrbox: 250
+    },
+    qrCodeMessage => {
+      html5QrCode.stop();
+      markAttendance(qrCodeMessage);
+      setTimeout(() => location.reload(), 3000);
+    },
+    errorMessage => {
+    }
+  );
 </script>
 
 </body>
