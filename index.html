@@ -21,7 +21,7 @@
   function markAttendance(code) {
     document.getElementById('status').innerText = `تم تسجيل الحضور للرمز: ${code}`;
 
-    fetch('https://script.google.com/macros/s/AKfycbyOWXwzJU57fREk0EBx5Z4qIThT11qWxmwIenxtO6oOXmHvpgKRijp3ORBWyAsLvx2U/execc', {
+    fetch('https://script.google.com/macros/s/AKfycbyOWXwzJU57fREk0EBx5Z4qIThT11qWxmwIenxtO6oOXmHvpgKRijp3ORBWyAsLvx2U/exec', {
       method: 'POST',
       mode: 'no-cors',
       body: JSON.stringify({
