@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>مسح الحضور - نادي كلباء</title>
+  <title>مسح الحضور - كرة القدم</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://unpkg.com/html5-qrcode"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -152,7 +152,7 @@
 </header>
 
 <main>
-  <h2>مسح رمز الاستجابة السريعة للحضور</h2>
+  <h2>مسح رمز الاستجابة السريعة للحضور - كرة القدم</h2>
   <div id="reader"></div>
   <div id="status">يرجى توجيه الكاميرا نحو رمز QR الخاص باللاعب</div>
 </main>
@@ -169,13 +169,25 @@
 </footer>
 
 <script>
+  const GAME_NAME = "كرة القدم"; // ✨ Change this per page (الشطرنج، السباحة، ...)
+
   const statusDiv = document.getElementById("status");
 
   function markAttendance(code) {
-    statusDiv.innerText = `جارٍ تسجيل الحضور...`;
+    const parts = code.split("|");
+    const id = parts[0] || "غير معروف";
+    const name = parts[1] || "غير معروف";
+
+    statusDiv.innerHTML = `
+      <p>✅ تم تسجيل الحضور</p>
+      <p><strong>الاسم:</strong> ${name}</p>
+      <p><strong>اللعبة:</strong> ${GAME_NAME}</p>
+    `;
 
     const formData = new FormData();
-    formData.append("id", code);
+    formData.append("id", id);
+    formData.append("name", name);
+    formData.append("game", GAME_NAME);
     formData.append("date", new Date().toISOString());
 
     fetch("https://script.google.com/macros/s/AKfycbyZpbnkuLya5nJ9JlP4eeoo_yjZ8n4eczdtcqgHw3NVhrVSMqiTmHMUY2b43Ns97JSH6Q/exec", {
@@ -184,7 +196,7 @@
       body: formData
     });
 
-    statusDiv.innerText = `✅ تم تسجيل الحضور للرمز: ${code}`;
+    setTimeout(() => location.reload(), 4000);
   }
 
   const html5QrCode = new Html5Qrcode("reader");
@@ -194,7 +206,6 @@
     qrCodeMessage => {
       html5QrCode.stop();
       markAttendance(qrCodeMessage);
-      setTimeout(() => location.reload(), 4000);
     },
     error => {}
   );
