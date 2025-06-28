@@ -152,9 +152,15 @@
 </header>
 
 <main>
-  <h2>مسح رمز الاستجابة السريعة للحضور - كرة القدم</h2>
-  <div id="reader"></div>
-  <div id="status">يرجى توجيه الكاميرا نحو رمز QR الخاص باللاعب</div>
+<div style="background: black; padding: 12px 20px; border-radius: 12px; text-align: center; margin-bottom: 15px;">
+  <h2 style="margin: 0; color: #f4e733;">مسح رمز الاستجابة السريعة للحضور - كرة القدم</h2>
+</div>
+
+<div id="reader"></div>
+
+<div id="status" style="background: black; padding: 10px 15px; border-radius: 10px; margin-top: 15px;">
+  يرجى توجيه الكاميرا نحو رمز QR الخاص باللاعب
+</div>
 </main>
 
 <footer>
@@ -169,24 +175,29 @@
 </footer>
 
 <script>
-  const GAME_NAME = "كرة القدم"; // ✨ Change this per page (الشطرنج، السباحة، ...)
+  const GAME_NAME = "كرة القدم"; // ✅ Change only this per page
 
   const statusDiv = document.getElementById("status");
 
   function markAttendance(code) {
-    const parts = code.split("|");
-    const id = parts[0] || "غير معروف";
-    const name = parts[1] || "غير معروف";
+    const parts = code.split('|');
+    const id = parts[0] || "UNKNOWN";
+    const encodedName = parts[1] || "UNKNOWN";
+    const encodedParent = parts[2] || "UNKNOWN";
+    const name = decodeURIComponent(encodedName);
+    const parent = decodeURIComponent(encodedParent);
 
     statusDiv.innerHTML = `
       <p>✅ تم تسجيل الحضور</p>
       <p><strong>الاسم:</strong> ${name}</p>
+      <p><strong>ولي الأمر:</strong> ${parent}</p>
       <p><strong>اللعبة:</strong> ${GAME_NAME}</p>
     `;
 
     const formData = new FormData();
     formData.append("id", id);
-    formData.append("name", name);
+    formData.append("name", encodedName);
+    formData.append("parent", encodedParent);
     formData.append("game", GAME_NAME);
     formData.append("date", new Date().toISOString());
 
