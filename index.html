@@ -178,17 +178,27 @@
 </footer>
 
 <script>
-  const GAME_NAME = "كرة القدم"; // ✅ Change only this per page
+  const GAME_NAME = "كرة القدم"; // ✅ Adjust per page
 
   const statusDiv = document.getElementById("status");
+
+  // 🟡 Fix Arabic characters if not encoded properly
+  function fixArabic(text) {
+    try {
+      return decodeURIComponent(escape(text));
+    } catch (e) {
+      return text;
+    }
+  }
 
   function markAttendance(code) {
     const parts = code.split('|');
     const id = parts[0] || "UNKNOWN";
     const encodedName = parts[1] || "UNKNOWN";
     const encodedParent = parts[2] || "UNKNOWN";
-    const name = decodeURIComponent(encodedName.replace(/\+/g, ' '));
-    const parent = decodeURIComponent(encodedParent.replace(/\+/g, ' '));
+
+    const name = fixArabic(encodedName);
+    const parent = fixArabic(encodedParent);
 
     statusDiv.innerHTML = `
       <p>✅ تم تسجيل الحضور</p>
@@ -199,8 +209,8 @@
 
     const formData = new FormData();
     formData.append("id", code);
-    formData.append("name", decodeURIComponent(encodedName));
-    formData.append("parent", decodeURIComponent(encodedParent));
+    formData.append("name", name);
+    formData.append("parent", parent);
     formData.append("game", GAME_NAME);
     formData.append("date", new Date().toISOString());
 
@@ -221,7 +231,9 @@
       html5QrCode.stop();
       markAttendance(qrCodeMessage);
     },
-    error => {}
+    error => {
+      // silent
+    }
   );
 </script>
 
