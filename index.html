@@ -182,23 +182,14 @@
 
   const statusDiv = document.getElementById("status");
 
-  // 🟡 Fix Arabic characters if not encoded properly
-  function fixArabic(text) {
-    try {
-      return decodeURIComponent(escape(text));
-    } catch (e) {
-      return text;
-    }
-  }
-
   function markAttendance(code) {
     const parts = code.split('|');
     const id = parts[0] || "UNKNOWN";
     const encodedName = parts[1] || "UNKNOWN";
     const encodedParent = parts[2] || "UNKNOWN";
 
-    const name = fixArabic(encodedName);
-    const parent = fixArabic(encodedParent);
+  const name = decodeURIComponent(encodedName);
+  const parent = decodeURIComponent(encodedParent);
 
     statusDiv.innerHTML = `
       <p>✅ تم تسجيل الحضور</p>
