@@ -87,7 +87,7 @@
       border: 3px solid #f4e733;
       border-radius: 15px;
       overflow: hidden;
-      background-color: #000;
+      background: white;
     }
 
     #status {
@@ -214,18 +214,27 @@
     setTimeout(() => location.reload(), 4000);
   }
 
-  const html5QrCode = new Html5Qrcode("reader");
-  html5QrCode.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    qrCodeMessage => {
-      html5QrCode.stop();
-      markAttendance(qrCodeMessage);
-    },
-    error => {
-      // silent
+const html5QrCode = new Html5Qrcode("reader");
+html5QrCode.start(
+  { facingMode: "environment" },
+  {
+    fps: 20, // increase frame rate
+    qrbox: { width: 300, height: 300 }, // larger scan box
+    aspectRatio: 1.0,
+    experimentalFeatures: {
+      useBarCodeDetectorIfSupported: true // use better scanner if browser allows
     }
-  );
+  },
+  qrCodeMessage => {
+    html5QrCode.stop();
+    markAttendance(qrCodeMessage);
+  },
+  error => {
+    // optional: show scanning status
+    // console.warn(`QR error: ${error}`);
+  }
+);
+
 </script>
 
 </body>
