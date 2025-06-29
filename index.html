@@ -187,8 +187,8 @@
     const id = parts[0] || "UNKNOWN";
     const encodedName = parts[1] || "UNKNOWN";
     const encodedParent = parts[2] || "UNKNOWN";
-    const name = decodeURIComponent(encodedName);
-    const parent = decodeURIComponent(encodedParent);
+    const name = decodeURIComponent(encodedName.replace(/\+/g, ' '));
+    const parent = decodeURIComponent(encodedParent.replace(/\+/g, ' '));
 
     statusDiv.innerHTML = `
       <p>✅ تم تسجيل الحضور</p>
