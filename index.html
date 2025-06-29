@@ -199,8 +199,8 @@
 
     const formData = new FormData();
     formData.append("id", code);
-    formData.append("name", encodedName);
-    formData.append("parent", encodedParent);
+    formData.append("name", decodeURIComponent(encodedName));
+    formData.append("parent", decodeURIComponent(encodedParent));
     formData.append("game", GAME_NAME);
     formData.append("date", new Date().toISOString());
 
